@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import interactionPlugin from '@fullcalendar/interaction'; // for selectable
+import dayGridPlugin from '@fullcalendar/daygrid'; // for dayGridMonth view
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'LeaveBetter';
+  calendarPlugins = [interactionPlugin,  dayGridPlugin];
+  constructor() {}
 }
