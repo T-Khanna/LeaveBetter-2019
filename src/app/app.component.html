@@ -1,5 +1,3 @@
-
-
 <div id="container" style="margin-left: 5%; margin-right: 5%">
   <mat-form-field>
     <mat-label>OOTO Category</mat-label>
@@ -9,8 +7,15 @@
       <mat-option>Sick Leave</mat-option>
     </mat-select>
   </mat-form-field>
-  
+
   <button mat-raised-button color="primary" onclick="submitEvent()" style="margin-left: 5%; margin-right: 5%">Submit event</button>
     <!-- Calendar -->
-    <full-calendar defaultView="dayGridMonth" [plugins]="calendarPlugins" [selectable]="true" (select)="onCalendarDateChanged($event)"></full-calendar>
+    <full-calendar
+      #calendar
+      defaultView="dayGridMonth"
+      [plugins]="calendarPlugins"
+      [selectable]="true"
+      [events]="calendarEvents"
+      (select)="onCalendarDateChanged($event)"
+    ></full-calendar>
 </div>
