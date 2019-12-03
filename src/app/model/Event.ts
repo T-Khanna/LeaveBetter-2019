@@ -1,20 +1,42 @@
 import {Person} from './Person';
 
-enum EventCategory {
+export enum EventCategory {
   Holiday,
   SickLeave,
   WorkFromHome
 }
 
 export class Event {
-
     person: Person;
     eventStart: Date;
     eventEnd: Date;
     category: EventCategory;
+}
 
-    public setDates(startDate: Date, endDate: Date) {
-      this.eventStart = startDate;
-      this.eventEnd = endDate;
-    }
+export class EventBuilder {
+  event: Event;
+
+  constructor() {
+    this.event = new Event();
+  }
+
+  withDates(startDate: Date, endDate: Date) {
+    this.event.eventStart = startDate;
+    this.event.eventEnd = endDate;
+    return this;
+  }
+
+  withCategory(category: EventCategory) {
+    this.event.category = category;
+    return this;
+  }
+
+  withPerson(person: Person) {
+    this.event.person = person;
+    return this;
+  }
+
+  build(): Event {
+    return this.event;
+  }
 }

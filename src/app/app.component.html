@@ -1,10 +1,10 @@
 <div id="container" style="margin-left: 5%; margin-right: 5%; margin-top:15px;">
   <mat-form-field>
     <mat-label>OOTO Category</mat-label>
-    <mat-select>
-      <mat-option>WFH</mat-option>
-      <mat-option>Holiday</mat-option>
-      <mat-option>Sick Leave</mat-option>
+    <mat-select (selectionChange)="onCategoryChanged($event)">
+      <mat-option value="2">WFH</mat-option>
+      <mat-option value="0">Holiday</mat-option>
+      <mat-option value="1">Sick Leave</mat-option>
     </mat-select>
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="submitEvent()" style="margin-left: 5%; margin-right: 5%">Submit event</button>

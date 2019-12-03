@@ -1,9 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import dayGridPlugin from '@fullcalendar/daygrid'; // for dayGridMonth view
-import {Event} from './model/Event';
+import {EventBuilder, EventCategory} from './model/Event';
 import {FullCalendarComponent} from "@fullcalendar/angular";
 import {EventInput} from "@fullcalendar/core/structs/event";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-root',
@@ -14,43 +15,72 @@ import {EventInput} from "@fullcalendar/core/structs/event";
 export class AppComponent {
   title = 'LeaveBetter';
   calendarPlugins = [interactionPlugin,  dayGridPlugin];
-  event:Event = new Event();
-  calendarEvents:EventInput[];
+  eventBuilder:EventBuilder = new EventBuilder();
+  calendarEvents:EventInput[] = [];
 
   // references calendar in template
   @ViewChild('calendar', {static: false}) calendarComponent: FullCalendarComponent;
 
-
   onCalendarDateChanged(info){
-    this.event.setDates(info.start, info.end);
+    this.eventBuilder.withDates(info.start, info.end);
+  }
+
+  onCategoryChanged(change: MatSelectChange) {
+    this.eventBuilder.withCategory(parseInt(change.value));
   }
 
   submitEvent() {
-    alert("event submitted");
+    let event = this.eventBuilder.build();
+
+    var type:string;
+    switch (event.category) {
+      case EventCategory.Holiday:
+        type = "on annual leave";
+        break;
+      case EventCategory.WorkFromHome:
+        type = "wfh";
+        break;
+      case EventCategory.SickLeave:
+        type = "on sick leave";
+        break;
+      default:
+        alert("Please select a category");
+        return;
+    }
+
+    var range:string;
+    let startDateInclusive = event.eventStart;
+    let endDateInclusive = new Date(event.eventEnd.getTime());
+    endDateInclusive.setDate(event.eventEnd.getDate() - 1);
+    if (startDateInclusive.getTime() == endDateInclusive.getTime()) {
+      range = startDateInclusive.toDateString();
+    } else {
+      range = startDateInclusive.toDateString() + " to " + endDateInclusive.toDateString();
+    }
+
+    if (confirm("Are you sure you are/will be " + type + " during " + range + "?")) {
+      this.addNewEventToCalendar(event);
+    }
   }
 
   constructor() {}
-
-  ngOnInit() {
-    this.calendarEvents = [];
-  }
 
   // needed for ViewChild to load initialised calendar
   ngAfterViewInit() {
     let dummyData = {
       entries: [
-        {
-          start_date: new Date(2019, 10, 26),
-          end_date: new Date(2019, 11, 2),
-        },
-        {
-          start_date: new Date(2019, 11, 14),
-          end_date: new Date(2019, 11, 17),
-        },
-        {
-          start_date: new Date(2019, 11, 23),
-          end_date: new Date(2020, 0, 6),
-        },
+        new EventBuilder()
+          .withDates(new Date(2019, 10, 26), new Date(2019, 11, 2))
+          .withCategory(EventCategory.Holiday)
+          .build(),
+        new EventBuilder()
+          .withDates(new Date(2019, 11, 14), new Date(2019, 11, 17))
+          .withCategory(EventCategory.SickLeave)
+          .build(),
+        new EventBuilder()
+          .withDates(new Date(2019, 11, 23), new Date(2020, 0, 6))
+          .withCategory(EventCategory.WorkFromHome)
+          .build(),
       ]
     };
 
@@ -59,8 +89,8 @@ export class AppComponent {
 
   addExistingEventsToCalendar(data) {
     let calendar = this.getCalendar();
-
     let currentDate = calendar.getDate();
+
     let year = currentDate.getFullYear();
     let month = currentDate.getMonth();
     let monthStartDate = new Date(year, month, 1);
@@ -75,20 +105,15 @@ export class AppComponent {
     console.log("ENTRIES");
     console.log(data);
 
-    data.entries.forEach(entry => {
-      this.addNewEventToCalendar(
-        "Hello world", entry.start_date, entry.end_date
-      );
-
-    })
+    data.entries.forEach(event => this.addNewEventToCalendar(event));
   }
 
-  addNewEventToCalendar(title, startDate, endDate) {
+  addNewEventToCalendar(event) {
     setTimeout(() => {
       this.calendarEvents = this.calendarEvents.concat({
-        title: title,
-        start: startDate,
-        end: endDate
+        title: EventCategory[event.category],
+        start: event.eventStart,
+        end: event.eventEnd
       });
     });
   };
