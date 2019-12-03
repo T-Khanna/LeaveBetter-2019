@@ -1,6 +1,6 @@
 
 
-<div id="container" style="margin-left: 5%; margin-right: 5%">
+<div id="container" style="margin-left: 5%; margin-right: 5%; margin-top:15px;">
   <mat-form-field>
     <mat-label>OOTO Category</mat-label>
     <mat-select>
@@ -10,7 +10,9 @@
     </mat-select>
   </mat-form-field>
   
-  <button mat-raised-button color="primary" onclick="submitEvent()" style="margin-left: 5%; margin-right: 5%">Submit event</button>
+  <button mat-raised-button color="primary" (click)="submitEvent()" style="margin-left: 5%; margin-right: 5%">Submit event</button>
     <!-- Calendar -->
-    <full-calendar defaultView="dayGridMonth" [plugins]="calendarPlugins" [selectable]="true" (select)="onCalendarDateChanged($event)"></full-calendar>
-</div>
+    <div style="max-width:700px">
+      <full-calendar defaultView="dayGridMonth" [plugins]="calendarPlugins" [selectable]="true" (select)="onCalendarDateChanged($event)"></full-calendar>
+    </div>
+  </div>
