@@ -12,7 +12,7 @@
   
   <button mat-raised-button color="primary" (click)="submitEvent()" style="margin-left: 5%; margin-right: 5%">Submit event</button>
     <!-- Calendar -->
-    <div style="max-width:700px">
+    <div>
       <full-calendar defaultView="dayGridMonth" [plugins]="calendarPlugins" [selectable]="true" (select)="onCalendarDateChanged($event)"></full-calendar>
     </div>
   </div>
