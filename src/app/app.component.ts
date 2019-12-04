@@ -67,24 +67,24 @@ export class AppComponent {
 
   // needed for ViewChild to load initialised calendar
   ngAfterViewInit() {
-    let dummyData = {
-      entries: [
-        new EventBuilder()
-          .withDates(new Date(2019, 10, 26), new Date(2019, 11, 2))
-          .withCategory(EventCategory.Holiday)
-          .build(),
-        new EventBuilder()
-          .withDates(new Date(2019, 11, 14), new Date(2019, 11, 17))
-          .withCategory(EventCategory.SickLeave)
-          .build(),
-        new EventBuilder()
-          .withDates(new Date(2019, 11, 23), new Date(2020, 0, 6))
-          .withCategory(EventCategory.WorkFromHome)
-          .build(),
-      ]
-    };
+    // let dummyData = {
+    //   entries: [
+    //     new EventBuilder()
+    //       .withDates(new Date(2019, 10, 26), new Date(2019, 11, 2))
+    //       .withCategory(EventCategory.Holiday)
+    //       .build(),
+    //     new EventBuilder()
+    //       .withDates(new Date(2019, 11, 14), new Date(2019, 11, 17))
+    //       .withCategory(EventCategory.SickLeave)
+    //       .build(),
+    //     new EventBuilder()
+    //       .withDates(new Date(2019, 11, 23), new Date(2020, 0, 6))
+    //       .withCategory(EventCategory.WorkFromHome)
+    //       .build(),
+    //   ]
+    // };
 
-    this.addExistingEventsToCalendar(dummyData);
+    // this.addExistingEventsToCalendar(dummyData);
   }
 
   addExistingEventsToCalendar(data) {
